@@ -4,9 +4,8 @@ import java.io.FileNotFoundException;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+
+import org.apache.commons.lang3.tuple.Pair;
 
 import fr.lirmm.graphik.defeasible.core.DefeasibleKnowledgeBase;
 
@@ -43,78 +42,71 @@ public class BenchRunner {
 		writer.print("approach,bench,size,iteration,loadingTime,executionTime,answer\n");
 		
 		// Loop for different KBs
-		Iterator<DefeasibleKnowledgeBase> itDataSet = this.BENCH.getDataSets().iterator();
+		DataSetGenerator datasets = this.BENCH.getDataSets();
 		
-			while(itDataSet.hasNext()) {
-				KBStructure kb = (KBStructure) itBenchParam.next();
+		while(datasets.hasNext()) {
+			DefeasibleKnowledgeBase kb = datasets.next();
+			
+			// Loop for Approaches
+			Iterator<Approach> itApproaches = this.APPROACHES.iterator();
+			while(itApproaches.hasNext()) {
+				Approach approach = itApproaches.next();
+				approach.initialize();
 				
-				// Loop for Approaches
-				Iterator<Approach> itApproaches = this.APPROACHES.iterator();
-				while(itApproaches.hasNext()) {
-					Approach approach = itApproaches.next();
-					approach.initialize();
-					List<Pair<String, ? extends Object>> kbPair = new LinkedList<Pair<String, ? extends Object>>();
-					kbPair.add(new ImmutablePair<String, KBStructure>("KB", kb));
-					
-					// Loop for Iterations
-					for(int iteration = 0; iteration < this.NB_ITERATION; ++iteration) {
-						StringBuilder output = new StringBuilder();
-						output.append(approach.getName());
-						output.append(',');
-						output.append(BENCH.getName());
-						output.append(',');
-						output.append(itBenchParam.getCurrentSize());
-						output.append(',');
-						output.append(iteration);
+				// Loop for Iterations
+				for(int iteration = 0; iteration < this.NB_ITERATION; ++iteration) {
+					StringBuilder output = new StringBuilder();
+					output.append(approach.getName());
+					output.append(',');
+					output.append(BENCH.getName());
+					output.append(',');
+					output.append(datasets.getCurrentSize());
+					output.append(',');
+					output.append(iteration);
 						
-						if (LOGGER.isInfoEnabled()) {
-							LOGGER.info(output.toString());
-						}
-						// call prepare function of the approach
-						approach.prepare(kbPair.iterator());
-						// run the approach
-						Thread thread = new Thread(approach);
-						thread.start();
-						// If the thread takes too much time log it and kill it
-						try {
-							thread.join(timeout);
-						} catch (InterruptedException e1) {
+					// call prepare function of the approach
+					approach.prepare(kb);
+					// run the approach
+					Thread thread = new Thread(approach);
+					thread.start();
+					// If the thread takes too much time log it and kill it
+					try {
+						thread.join(this.TIMEOUT);
+					} catch (InterruptedException e1) {
 
-						}
-						
-						String loadingTime = "TO";
-						String executionTime = "TO";
-						String answer = "TO";
-						
-						if(thread.isAlive()) {
-							if(LOGGER.isWarnEnabled()) {
-								LOGGER.warn("TIMEOUT: ", output.toString());
-							}
-							thread.stop();
-						} else {
-							Iterator<Pair<String, ? extends Object>> data = approach.getResults();
-							while (data.hasNext()) {
-								Pair<String, ? extends Object> pair = data.next();
-								if(pair.getKey().equals(Approach.LOADING_TIME)) {
-									loadingTime = String.valueOf(pair.getValue());
-								} else if(pair.getKey().equals(Approach.EXE_TIME)) {
-									executionTime = String.valueOf(pair.getValue());
-								} else if(pair.getKey().equals(Approach.ANSWER)) {
-									answer = String.valueOf(pair.getValue());
-								}
-							}
-						}
-						output.append(',');
-						output.append(loadingTime);
-						output.append(',');
-						output.append(executionTime);
-						output.append(',');
-						output.append(answer);
-						output.append('\n');
-						writer.print(output.toString());
-						System.out.println(output.toString());
-						writer.flush();
 					}
+						
+					String loadingTime = "TO";
+					String executionTime = "TO";
+					String answer = "TO";
+						
+					if(thread.isAlive()) {
+						// Thread Timedout
+						thread.stop();
+					} else {
+						Iterator<Pair<String, ? extends Object>> data = approach.getResults();
+						while (data.hasNext()) {
+							Pair<String, ? extends Object> pair = data.next();
+							if(pair.getKey().equals(Approach.LOADING_TIME)) {
+								loadingTime = String.valueOf(pair.getValue());
+							} else if(pair.getKey().equals(Approach.EXE_TIME)) {
+								executionTime = String.valueOf(pair.getValue());
+							} else if(pair.getKey().equals(Approach.ANSWER)) {
+								answer = String.valueOf(pair.getValue());
+							}
+						}
+					}
+					output.append(',');
+					output.append(loadingTime);
+					output.append(',');
+					output.append(executionTime);
+					output.append(',');
+					output.append(answer);
+					output.append('\n');
+					writer.print(output.toString());
+					System.out.println(output.toString());
+					writer.flush();
+				
 				}
 			}
 		}
