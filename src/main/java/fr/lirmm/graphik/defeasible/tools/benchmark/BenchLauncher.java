@@ -6,8 +6,11 @@ import java.io.OutputStream;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.junit.runners.Parameterized.Parameter;
+import com.beust.jcommander.IStringConverter;
+import com.beust.jcommander.JCommander;
+import com.beust.jcommander.Parameter;
 
+import fr.lirmm.graphik.defeasible.tools.benchmark.chain.ChainBenchDataSet;
 import fr.lirmm.graphik.defeasible.tools.benchmark.core.Approach;
 import fr.lirmm.graphik.defeasible.tools.benchmark.core.BenchDataSet;
 import fr.lirmm.graphik.defeasible.tools.benchmark.core.BenchRunner;
@@ -15,7 +18,6 @@ import fr.lirmm.graphik.util.stream.IteratorException;
 
 public class BenchLauncher {
 	public static final String BENCH_CHAIN = "CHAIN";
-	public static final String BENCH_SIMPLE_CHAIN = "SIMPLE_CHAIN";
 	public static final String BENCH_EXISTENTIAL = "EXISTENTIAL_TEST";
 	public static final String BENCH_SIMPLE_CHAIN_FES = "SIMPLE_CHAIN_FES";
 	public static final String BENCH_CHAIN_FES = "CHAIN_FES";
@@ -80,12 +82,15 @@ public class BenchLauncher {
 		}
 		
 		List<Approach> approaches = new LinkedList<Approach>();
-		approaches.add(new DEFTTool());
-		approaches.add(new DeLPTool());
-		approaches.add(new ASPICTool());
+		//approaches.add(new DEFTTool());
+		//approaches.add(new DeLPTool());
+		//approaches.add(new ASPICTool());
 		
 		BenchDataSet bench = null;
-		if(options.benchType == options.BENCH_CHAIN_FES) {
+		if(options.benchType == BENCH_CHAIN) {
+			bench = new ChainBenchDataSet(options.sizes, options.nbrAtoms, options.nbrTerms);
+		}
+		/*if(options.benchType == options.BENCH_CHAIN_FES) {
 			// bench circle
 			bench = new ChainFESBenchDataSet(options.sizes);
 		} else if(options.benchType == options.BENCH_EXISTENTIAL) {
@@ -108,9 +113,9 @@ public class BenchLauncher {
 			bench = new TreesBenchDataSet(options.sizes, 5);
 		} else if(options.benchType == options.BENCH_TREES_CONFLICT) {
 			bench = new TreesConflictBenchDataSet(options.sizes, 5);
-		}
+		}*/
 		
-		new BenchRunner(bench, approaches, outputStream, options.iterations, options.timeout).run(null);
+		new BenchRunner(bench, approaches, outputStream, options.iterations, options.timeout).run();
 		
 		System.out.println("===End the execusion===");
 	}

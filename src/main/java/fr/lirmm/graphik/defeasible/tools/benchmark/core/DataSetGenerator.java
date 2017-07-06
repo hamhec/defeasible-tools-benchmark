@@ -3,8 +3,12 @@ package fr.lirmm.graphik.defeasible.tools.benchmark.core;
 import java.util.Iterator;
 
 import fr.lirmm.graphik.defeasible.core.DefeasibleKnowledgeBase;
+import fr.lirmm.graphik.graal.api.core.AtomSetException;
+import fr.lirmm.graphik.graal.api.io.ParseException;
 
 public abstract class DataSetGenerator implements Iterator<DefeasibleKnowledgeBase> {
+	public static final String P = "p", NP="np", Q = "q", NQ="nq";
+	
 	private int[] sizes;
 	private int position;
 	private int nbrAtoms;
@@ -18,10 +22,6 @@ public abstract class DataSetGenerator implements Iterator<DefeasibleKnowledgeBa
 		this.nbrAtoms = nbrAtoms;
 		this.position = -1;
 		this.hasNextCallDone = false;
-	}
-	
-	public DataSetGenerator(int[] sizes) {
-		this(sizes, 1, 1);
 	}
 
 	public boolean hasNext() {
@@ -37,14 +37,19 @@ public abstract class DataSetGenerator implements Iterator<DefeasibleKnowledgeBa
 			this.hasNext();
 		}
 		this.hasNextCallDone = false;
-		return generate(sizes[position]);
+		try {
+			return generate(sizes[position]);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	public int getCurrentSize() {
 		return this.sizes[this.position];
 	}
 	
-	protected abstract DefeasibleKnowledgeBase generate(int i);
+	protected abstract DefeasibleKnowledgeBase generate(int i) throws ParseException, AtomSetException;
 	
 	protected String getTermsString(String param) {
 		String str = "(" + param + "0";
