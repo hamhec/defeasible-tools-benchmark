@@ -5,6 +5,7 @@ import java.util.Iterator;
 import org.apache.commons.lang3.tuple.Pair;
 
 import fr.lirmm.graphik.defeasible.core.DefeasibleKnowledgeBase;
+import fr.lirmm.graphik.graal.api.core.ConjunctiveQuery;
 
 public interface Approach extends Runnable {
 	public static final String TOTAL_TIME = "total-time";
@@ -12,7 +13,7 @@ public interface Approach extends Runnable {
 	public static final String LOADING_TIME = "loading-time";
 	public static final String ANSWER = "answer";
 	
-	void prepare(DefeasibleKnowledgeBase kb);
+	void prepare(DefeasibleKnowledgeBase kb, ConjunctiveQuery query);
 	
 	void initialize();
 	

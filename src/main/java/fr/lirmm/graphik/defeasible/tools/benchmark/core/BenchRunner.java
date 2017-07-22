@@ -4,10 +4,12 @@ import java.io.FileNotFoundException;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.Iterator;
+import java.util.List;
 
 import org.apache.commons.lang3.tuple.Pair;
 
 import fr.lirmm.graphik.defeasible.core.DefeasibleKnowledgeBase;
+import fr.lirmm.graphik.graal.api.core.ConjunctiveQuery;
 
 public class BenchRunner {
 	private final BenchDataSet BENCH;
@@ -45,7 +47,9 @@ public class BenchRunner {
 		DataSetGenerator datasets = this.BENCH.getDataSets();
 		
 		while(datasets.hasNext()) {
-			DefeasibleKnowledgeBase kb = datasets.next();
+			Iterator<? extends Object> itDataset = datasets.next();
+			DefeasibleKnowledgeBase kb = (DefeasibleKnowledgeBase) itDataset.next();
+			ConjunctiveQuery query = (ConjunctiveQuery) itDataset.next();
 			
 			// Loop for Approaches
 			Iterator<Approach> itApproaches = this.APPROACHES.iterator();
@@ -65,7 +69,7 @@ public class BenchRunner {
 					output.append(iteration);
 						
 					// call prepare function of the approach
-					approach.prepare(kb);
+					approach.prepare(kb, query);
 					// run the approach
 					Thread thread = new Thread(approach);
 					thread.start();
