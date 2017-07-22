@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
 import fr.lirmm.graphik.defeasible.core.DefeasibleKnowledgeBase;
@@ -72,8 +73,10 @@ public abstract class AbstractTool implements Approach {
 	}
 
 	public Iterator<Pair<String, ? extends Object>> getResults() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.results.iterator();
+	}
+	public void addResult(String str, Object result) {
+		this.results.add(new ImmutablePair<String, Object>(str, result));
 	}
 	
 	public Profiler getProfiler() {
