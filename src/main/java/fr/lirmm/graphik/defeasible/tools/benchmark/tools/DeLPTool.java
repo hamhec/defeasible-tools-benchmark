@@ -3,12 +3,10 @@ package fr.lirmm.graphik.defeasible.tools.benchmark.tools;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
-import fr.lirmm.graphik.defeasible.core.DefeasibleKnowledgeBase;
 import fr.lirmm.graphik.defeasible.core.preference.Preference;
 import fr.lirmm.graphik.defeasible.core.rules.DefeasibleRule;
 import fr.lirmm.graphik.defeasible.core.rules.DefeaterRule;
 import fr.lirmm.graphik.defeasible.tools.benchmark.core.Approach;
-import fr.lirmm.graphik.extended.dialectical.graph.simplified.core.ExtendedDialecticalGraph;
 import fr.lirmm.graphik.graal.api.core.Atom;
 import fr.lirmm.graphik.graal.api.core.ConjunctiveQuery;
 import fr.lirmm.graphik.graal.api.core.NegativeConstraint;
@@ -85,7 +83,7 @@ public class DeLPTool extends AbstractTool {
 
 	@Override
 	public String formatDefeasibleRule(DefeasibleRule rule) {
-		return this.formatRule(rule, " >- ");
+		return this.formatRule(rule, " -< ");
 	}
 
 	@Override
@@ -106,7 +104,7 @@ public class DeLPTool extends AbstractTool {
 		String secondAtom = this.formatAtom(itBody.next());
 		// the first atom implies the negation and the second the vice-versa
 		result += "~" + firstAtom + " <- " + secondAtom + ".\n"; 
-		result += "~" + secondAtom + " <- " + firstAtom + ".n";
+		result += "~" + secondAtom + " <- " + firstAtom + ".";
 		return result;
 	}
 
@@ -131,17 +129,12 @@ public class DeLPTool extends AbstractTool {
 	
 	private String formatRule(Rule rule, String implication) {
 		String result = "";
-		String label = "";
-		// Parse the label if it was defined
-		if(rule.getLabel() != null && !rule.getLabel().isEmpty()) {
-			label += "[" + rule.getLabel() + "] ";
-		}
 		
 		// In case the head is a conjunction and not atomic
 		Iterator<Rule> itAtomicHeadRule = Rules.computeAtomicHead(rule).iterator();
 		
 		while(itAtomicHeadRule.hasNext()) {
-			String rString = label;
+			String rString = "";
 			Rule r = itAtomicHeadRule.next();
 			// Format Head
 			rString += this.formatAtom(r.getHead().iterator().next());
