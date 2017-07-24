@@ -1,12 +1,14 @@
 package fr.lirmm.graphik.defeasible.tools.benchmark.chain;
 
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+
 import fr.lirmm.graphik.defeasible.core.DefeasibleKnowledgeBase;
 import fr.lirmm.graphik.defeasible.core.io.DlgpDefeasibleParser;
 import fr.lirmm.graphik.defeasible.tools.benchmark.core.BenchDataSet;
 import fr.lirmm.graphik.defeasible.tools.benchmark.core.DataSetGenerator;
-import fr.lirmm.graphik.graal.api.core.Atom;
 import fr.lirmm.graphik.graal.api.core.AtomSetException;
-import fr.lirmm.graphik.graal.api.core.Rule;
 import fr.lirmm.graphik.graal.api.io.ParseException;
 
 public class ChainBenchDataSet implements BenchDataSet {
@@ -49,7 +51,7 @@ public class ChainBenchDataSet implements BenchDataSet {
 		}
 
 		@Override
-		protected DefeasibleKnowledgeBase generate(int n) throws ParseException, AtomSetException {
+		protected Iterator<? extends Object> generate(int n) throws ParseException, AtomSetException {
 			DefeasibleKnowledgeBase kb = new DefeasibleKnowledgeBase();
 			
 			//Add first ground atoms
@@ -77,7 +79,12 @@ public class ChainBenchDataSet implements BenchDataSet {
 				kb.addDefeasibleRule(ruleString);
 			}
 			
-			return kb;
+			String query = P + (n) + "_0(a0).";
+			List<Object> generatedKBandQuery = new LinkedList<Object>();
+			generatedKBandQuery.add(kb);
+			generatedKBandQuery.add(DlgpDefeasibleParser.parseQuery("?() :- " + query));
+			
+			return generatedKBandQuery.iterator();
 		}
 		
 	}

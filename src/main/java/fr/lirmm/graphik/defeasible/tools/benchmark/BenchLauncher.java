@@ -14,6 +14,7 @@ import fr.lirmm.graphik.defeasible.tools.benchmark.chain.ChainBenchDataSet;
 import fr.lirmm.graphik.defeasible.tools.benchmark.core.Approach;
 import fr.lirmm.graphik.defeasible.tools.benchmark.core.BenchDataSet;
 import fr.lirmm.graphik.defeasible.tools.benchmark.core.BenchRunner;
+import fr.lirmm.graphik.defeasible.tools.benchmark.tools.ELDRTool;
 import fr.lirmm.graphik.util.stream.IteratorException;
 
 public class BenchLauncher {
@@ -35,19 +36,19 @@ public class BenchLauncher {
 	private boolean            help;
 	
 	@Parameter(names = { "-n", "--size" }, converter = IntArrayConverter.class, description = "Comma-separated list of sizes of the generated knowledge bases")
-	private int[]              sizes          = new int[] {3}; // {1500,2000};  //{1,2,3,4};//{1,10,100,200,300,400,500,1000};
+	private int[]              sizes          = new int[] {5};
 	
 	@Parameter(names = { "-b", "--bench" }, description = BENCH_CHAIN+"|"+BENCH_CHAIN_FES +"|"+BENCH_CIRCLE+"|...")
-	private String             benchType             = BENCH_TREES;
+	private String             benchType             = BENCH_CHAIN;
 	
 	@Parameter(names = { "-o", "--output-file" }, description = "Output file (use '-' for stdout)")
-	private String             outputFilePath = "Teams2.csv";//"-";
+	private String             outputFilePath = "-"; //"chain.csv"
 	
 	@Parameter(names = { "-t", "--timeout" }, description = "Timeout in ms")
 	private long               timeout        = 3000000;
 	
 	@Parameter(names = { "-i", "--iterations" }, description = "Number of iterations for each Bench size")
-	private int 			   iterations     = 2;
+	private int 			   iterations     = 1;
 	
 	@Parameter(names = { "-a", "--n-atoms" }, description = "Number of atoms per rule")
 	private int 			   nbrAtoms          = 1;
@@ -82,9 +83,11 @@ public class BenchLauncher {
 		}
 		
 		List<Approach> approaches = new LinkedList<Approach>();
+		approaches.add(new ELDRTool());
 		//approaches.add(new DEFTTool());
 		//approaches.add(new DeLPTool());
 		//approaches.add(new ASPICTool());
+		
 		
 		BenchDataSet bench = null;
 		if(options.benchType == BENCH_CHAIN) {

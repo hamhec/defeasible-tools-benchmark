@@ -38,7 +38,6 @@ public class BenchRunner {
 	// PUBLIC METHODS
 	// ------------------------------------------------------------------------
 	public void run() throws FileNotFoundException {
-		System.out.println("===Start the execusion of the Bench===");
 		this.BENCH.init();
 		PrintStream writer = new PrintStream(OUT);
 		writer.print("approach,bench,size,iteration,loadingTime,executionTime,answer\n");

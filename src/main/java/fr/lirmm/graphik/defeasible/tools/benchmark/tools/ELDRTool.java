@@ -70,12 +70,14 @@ public class ELDRTool extends AbstractTool {
 		if(query.isBoolean()) { // The query is ground (given my on-the-fly convention)
 			this.isGroundQuery = true;
 		}
-		return this.formatConjunctionOfAtoms(query.iterator());
+		return this.formatConjunctionOfAtoms(query.iterator()) + ".";
 	}
 	
 	public void run() {
 		String KBString = this.getKB();
 		
+		System.out.println(KBString);
+		System.out.println(this.getQuery());
 		try {
 			// I- Prepare Phase
 			this.getProfiler().clear();
