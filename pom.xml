@@ -28,6 +28,12 @@
 	</dependency>
 	
 	<dependency>
+	   <groupId>net.sf.tweety.arg</groupId>
+	   <artifactId>delp</artifactId>
+	   <version>1.7</version>
+	</dependency>
+	
+	<dependency>
 	    <groupId>com.beust</groupId>
 	    <artifactId>jcommander</artifactId>
 	    <version>1.58</version>
