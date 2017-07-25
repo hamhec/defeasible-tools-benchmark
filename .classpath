@@ -22,5 +22,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="/Aspic Inference Engine/bin/aspic-inference.0-4-10.bundled.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

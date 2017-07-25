@@ -14,6 +14,7 @@ import fr.lirmm.graphik.defeasible.tools.benchmark.chain.ChainBenchDataSet;
 import fr.lirmm.graphik.defeasible.tools.benchmark.core.Approach;
 import fr.lirmm.graphik.defeasible.tools.benchmark.core.BenchDataSet;
 import fr.lirmm.graphik.defeasible.tools.benchmark.core.BenchRunner;
+import fr.lirmm.graphik.defeasible.tools.benchmark.tools.ASPICTool;
 import fr.lirmm.graphik.defeasible.tools.benchmark.tools.DeLPTool;
 import fr.lirmm.graphik.defeasible.tools.benchmark.tools.ELDRTool;
 import fr.lirmm.graphik.util.stream.IteratorException;
@@ -86,7 +87,7 @@ public class BenchLauncher {
 		List<Approach> approaches = new LinkedList<Approach>();
 		approaches.add(new ELDRTool());
 		approaches.add(new DeLPTool());
-		//approaches.add(new ASPICTool());
+		approaches.add(new ASPICTool());
 		//approaches.add(new DEFTTool());
 		//approaches.add(new DRDeviceTool());
 		//approaches.add(new RuleLogTool());

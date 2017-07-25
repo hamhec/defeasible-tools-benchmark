@@ -1,10 +1,17 @@
 package fr.lirmm.graphik.defeasible.tools.benchmark.tools;
 
 import java.util.Iterator;
+import java.util.Map.Entry;
+
+import org.aspic.inference.Engine;
+import org.aspic.inference.Reasoner;
+import org.aspic.inference.Result;
+import org.aspic.inference.Valuator;
 
 import fr.lirmm.graphik.defeasible.core.preference.Preference;
 import fr.lirmm.graphik.defeasible.core.rules.DefeasibleRule;
 import fr.lirmm.graphik.defeasible.core.rules.DefeaterRule;
+import fr.lirmm.graphik.defeasible.tools.benchmark.core.Approach;
 import fr.lirmm.graphik.graal.api.core.Atom;
 import fr.lirmm.graphik.graal.api.core.ConjunctiveQuery;
 import fr.lirmm.graphik.graal.api.core.NegativeConstraint;
@@ -17,6 +24,41 @@ public class ASPICTool extends AbstractTool {
 			DEFEASIBLE = "0.5", SUPERIOR = "0.8", INFERIOR = "0.2";
 	
 	public void run() {
+		String KBString = this.getKBString();
+		
+		System.out.println(KBString);
+		System.out.println(this.getQuery());
+		
+		try {
+			// I- Prepare Phase
+			this.getProfiler().clear();
+			this.getProfiler().start(Approach.LOADING_TIME);
+			Engine eng = new Engine(KBString);
+			eng.setProperty(Engine.Property.SEMANTICS, Reasoner.GROUNDED);
+			eng.setProperty(Engine.Property.VALUATION, Valuator.WEAKEST_LINK);
+			eng.setProperty(Engine.Property.TRANSPOSITION, Engine.OnOff.OFF);
+			eng.setProperty(Engine.Property.RESTRICTED_REBUTTING, Engine.OnOff.OFF);
+			this.getProfiler().stop(Approach.LOADING_TIME);
+			
+			// II- Query Answering Phase
+			String entailement = "No";
+			this.getProfiler().start(Approach.EXE_TIME);
+			org.aspic.inference.Query query = eng.createQuery(this.getQuery());
+			Iterator<Result> itResult = query.getResults().iterator();
+			while(itResult.hasNext()) {
+				if(itResult.next().isUndefeated()) entailement = "Yes";
+			}
+			this.getProfiler().stop(Approach.EXE_TIME);
+			
+			// Submit Results
+			this.addResult(Approach.ANSWER, entailement);
+			for(Entry<String, Object> entry: this.getProfiler().entrySet()) {
+				this.addResult(entry.getKey(), entry.getValue());
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		// TODO Auto-generated method stub
 		
 	}
