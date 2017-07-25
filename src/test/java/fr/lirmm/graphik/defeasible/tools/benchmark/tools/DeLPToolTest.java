@@ -37,7 +37,6 @@ public class DeLPToolTest {
 	@Test
 	public void shouldFormatDefeasibleRuleWithLabel() throws ParseException {
 		DefeasibleRule rule = DlgpDefeasibleParser.parseDefeasibleRule("[r1] p(X) <= q(X).");
-		System.out.println(tool.formatDefeasibleRule(rule));
 		Assert.assertTrue((tool.formatDefeasibleRule(rule).equals("p(X) -< q(X).\n")));
 	}
 	

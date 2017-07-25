@@ -20,12 +20,14 @@ import fr.lirmm.graphik.graal.api.core.Term;
 import fr.lirmm.graphik.util.profiler.CPUTimeProfiler;
 import fr.lirmm.graphik.util.profiler.Profiler;
 import fr.lirmm.graphik.util.stream.CloseableIterator;
+import fr.lirmm.graphik.util.stream.CloseableIteratorWithoutException;
 import fr.lirmm.graphik.util.stream.IteratorException;
 
 public abstract class AbstractTool implements Approach {
 	
 	private Profiler profiler;
 	private StringBuilder KBStringBuilder;
+	private DefeasibleKnowledgeBase kb;
 	private String query;
 	private List<Pair<String, ? extends Object>> results; 
 	
@@ -39,6 +41,7 @@ public abstract class AbstractTool implements Approach {
 	public abstract String formatQuery(ConjunctiveQuery query);
 	
 	public void prepare(DefeasibleKnowledgeBase kb, ConjunctiveQuery query) {
+		this.kb = kb;
 		// Format Facts
 		try {
 			this.formatFacts(kb.getFacts().iterator());
@@ -70,6 +73,7 @@ public abstract class AbstractTool implements Approach {
 		this.profiler = new CPUTimeProfiler();
 		this.results = new LinkedList<Pair<String, ? extends Object>>();
 		this.KBStringBuilder = new StringBuilder();
+		this.kb = null;
 	}
 
 	public Iterator<Pair<String, ? extends Object>> getResults() {
@@ -82,8 +86,15 @@ public abstract class AbstractTool implements Approach {
 	public Profiler getProfiler() {
 		return this.profiler;
 	}
-	public String getKB() {
+	
+	public StringBuilder getKBStringBuilder() {
+		return this.KBStringBuilder;
+	}
+	public String getKBString() {
 		return this.KBStringBuilder.toString();
+	}
+	public DefeasibleKnowledgeBase getKB() {
+		return this.kb;
 	}
 	public String getQuery() {
 		return this.query;
@@ -138,6 +149,15 @@ public abstract class AbstractTool implements Approach {
 			result += "," + itTerms.next().getIdentifier();
 		}
 		result += ")";
+		return result;
+	}
+	
+	protected String formatConjunctionOfAtoms(CloseableIteratorWithoutException<Atom> itConjunct) {
+		String result = "";
+		if(itConjunct.hasNext()) result += this.formatAtom(itConjunct.next());
+		while(itConjunct.hasNext()) {
+			result += ", " + this.formatAtom(itConjunct.next());
+		}
 		return result;
 	}
 }

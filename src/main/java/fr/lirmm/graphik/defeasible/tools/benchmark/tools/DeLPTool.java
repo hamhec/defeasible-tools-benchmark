@@ -27,7 +27,7 @@ public class DeLPTool extends AbstractTool {
 	public static final String NAME = "DeLP";
 	
 	public void run() {
-		String KBString = this.getKB();
+		String KBString = this.getKBString();
 		
 		System.out.println(KBString);
 		System.out.println(this.getQuery());
@@ -118,16 +118,7 @@ public class DeLPTool extends AbstractTool {
 		return this.formatAtom(query.getAtomSet().iterator().next());
 	}
 	
-	private String formatConjunctionOfAtoms(CloseableIteratorWithoutException<Atom> itConjunct) {
-		String result = "";
-		if(itConjunct.hasNext()) result += this.formatAtom(itConjunct.next());
-		while(itConjunct.hasNext()) {
-			result += ", " + this.formatAtom(itConjunct.next());
-		}
-		return result;
-	}
-	
-	private String formatRule(Rule rule, String implication) {
+	protected String formatRule(Rule rule, String implication) {
 		String result = "";
 		
 		// In case the head is a conjunction and not atomic
