@@ -1,8 +1,13 @@
 package fr.lirmm.graphik.defeasible.tools.benchmark.tools;
 
+import java.io.StringReader;
+import java.util.Map.Entry;
+
+import fr.lirmm.graphik.DEFT.core.DefeasibleKB;
 import fr.lirmm.graphik.defeasible.core.preference.Preference;
 import fr.lirmm.graphik.defeasible.core.rules.DefeasibleRule;
 import fr.lirmm.graphik.defeasible.core.rules.DefeaterRule;
+import fr.lirmm.graphik.defeasible.tools.benchmark.core.Approach;
 import fr.lirmm.graphik.graal.api.core.Atom;
 import fr.lirmm.graphik.graal.api.core.ConjunctiveQuery;
 import fr.lirmm.graphik.graal.api.core.NegativeConstraint;
@@ -12,8 +17,34 @@ public class DEFTTool extends AbstractTool {
 	public static final String NAME = "DEFT";
 	
 	public void run() {
-		// TODO Auto-generated method stub
+String KBString = this.getKBString();
 		
+		System.out.println(KBString);
+		System.out.println(this.getQuery());
+		try {
+			// I- Prepare Phase
+			this.getProfiler().clear();
+			
+			this.getProfiler().start(Approach.LOADING_TIME);
+			DefeasibleKB kb = new DefeasibleKB(new StringReader(KBString));
+			kb.saturate();
+			Atom query = kb.getAtomsSatisfiyingAtomicQuery(this.getQuery()).iterator().next();
+			this.getProfiler().stop(Approach.LOADING_TIME);
+			
+			// II- Query Answering Phase
+			this.getProfiler().start(Approach.EXE_TIME);
+			String entailement = this.getAnswer(kb.EntailmentStatus(query));
+			this.getProfiler().stop(Approach.EXE_TIME);
+			
+			// Submit Results
+			this.addResult(Approach.ANSWER, entailement);
+			for(Entry<String, Object> entry: this.getProfiler().entrySet()) {
+				this.addResult(entry.getKey(), entry.getValue());
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -59,7 +90,7 @@ public class DEFTTool extends AbstractTool {
 
 	@Override
 	public String formatQuery(ConjunctiveQuery query) {
-		return this.formatAtom(query.getAtomSet().iterator().next()) + ".";
+		return "?() :- " + this.formatAtom(query.getAtomSet().iterator().next()) + ".";
 	}
 	
 	protected String formatRule(Rule rule, String label) {
@@ -75,5 +106,17 @@ public class DEFTTool extends AbstractTool {
 		result += this.formatConjunctionOfAtoms(rule.getBody().iterator());
 		result += ".";
 		return result;
+	}
+	
+	private String getAnswer(int ans) {
+		String answerString = "";
+		
+		switch(ans) {
+			case DefeasibleKB.NOT_ENTAILED: answerString = "No"; break;
+			case DefeasibleKB.DEFEASIBLY_ENTAILED: answerString = "Yes"; break;
+			case DefeasibleKB.STRICTLY_ENTAILED: answerString = "Yes";
+		}
+
+		return answerString;
 	}
 }
