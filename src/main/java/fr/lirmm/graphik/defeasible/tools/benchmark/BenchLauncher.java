@@ -10,10 +10,11 @@ import com.beust.jcommander.IStringConverter;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 
-import fr.lirmm.graphik.defeasible.tools.benchmark.chain.ChainBenchDataSet;
 import fr.lirmm.graphik.defeasible.tools.benchmark.core.Approach;
 import fr.lirmm.graphik.defeasible.tools.benchmark.core.BenchDataSet;
 import fr.lirmm.graphik.defeasible.tools.benchmark.core.BenchRunner;
+import fr.lirmm.graphik.defeasible.tools.benchmark.grd.ChainBenchDataSet;
+import fr.lirmm.graphik.defeasible.tools.benchmark.grd.CircleBenchDataSet;
 import fr.lirmm.graphik.defeasible.tools.benchmark.tools.ASPICTool;
 import fr.lirmm.graphik.defeasible.tools.benchmark.tools.DEFTTool;
 import fr.lirmm.graphik.defeasible.tools.benchmark.tools.DeLPTool;
@@ -22,11 +23,12 @@ import fr.lirmm.graphik.util.stream.IteratorException;
 
 public class BenchLauncher {
 	public static final String BENCH_CHAIN = "CHAIN";
+	public static final String BENCH_CIRCLE = "CIRCLE";
+	
 	public static final String BENCH_EXISTENTIAL = "EXISTENTIAL_TEST";
 	public static final String BENCH_SIMPLE_CHAIN_FES = "SIMPLE_CHAIN_FES";
 	public static final String BENCH_CHAIN_FES = "CHAIN_FES";
 	public static final String BENCH_CHAIN_PREF = "CHAIN_PREF";
-	public static final String BENCH_CIRCLE = "CIRCLE";
 	public static final String BENCH_AMBIGUITY = "AMBIGUITY_TEST";
 	public static final String BENCH_LEVELS = "LEVELS";
 	public static final String BENCH_TEAMS = "TEAMS";
@@ -42,7 +44,7 @@ public class BenchLauncher {
 	private int[]              sizes          = new int[] {5};
 	
 	@Parameter(names = { "-b", "--bench" }, description = BENCH_CHAIN+"|"+BENCH_CHAIN_FES +"|"+BENCH_CIRCLE+"|...")
-	private String             benchType             = BENCH_CHAIN;
+	private String             benchType             = BENCH_CIRCLE;
 	
 	@Parameter(names = { "-o", "--output-file" }, description = "Output file (use '-' for stdout)")
 	private String             outputFilePath = "-"; //"chain.csv"
@@ -96,31 +98,9 @@ public class BenchLauncher {
 		BenchDataSet bench = null;
 		if(options.benchType == BENCH_CHAIN) {
 			bench = new ChainBenchDataSet(options.sizes, options.nbrAtoms, options.nbrTerms);
-		}
-		/*if(options.benchType == options.BENCH_CHAIN_FES) {
-			// bench circle
-			bench = new ChainFESBenchDataSet(options.sizes);
-		} else if(options.benchType == options.BENCH_EXISTENTIAL) {
-			bench = new ExistentialTestBenchDataSet(options.sizes);
-		} else if(options.benchType == options.BENCH_CHAIN_PREF) {
-			bench = new ChainPrefBenchDataSet(options.sizes, options.nbrAtoms, options.nbrTerms);
-		} else if(options.benchType == options.BENCH_TEAMS) {
-			bench = new TeamsBenchDataSet(options.sizes);
-		} else if(options.benchType == options.BENCH_TEAMS_GAD) {
-			bench = new TeamsGADBenchDataSet(options.sizes);
-		} else if(options.benchType == options.BENCH_SIMPLE_CHAIN) {
-			bench = new SimpleChainBenchDataSet(options.sizes, options.nbrAtoms, options.nbrTerms);
 		} else if(options.benchType == options.BENCH_CIRCLE) {
-			bench = new CircleBenchDataSet(options.sizes, options.nbrAtoms, options.nbrTerms);
-		} else if(options.benchType == options.BENCH_SIMPLE_CHAIN_FES) {
-			bench = new SimpleChainFESBenchDataSet(options.sizes);
-		} else if(options.benchType == options.BENCH_LEVELS) {
-			bench = new LevelsBenchDataSet(options.sizes);
-		} else if(options.benchType == options.BENCH_TREES) {
-			bench = new TreesBenchDataSet(options.sizes, 5);
-		} else if(options.benchType == options.BENCH_TREES_CONFLICT) {
-			bench = new TreesConflictBenchDataSet(options.sizes, 5);
-		}*/
+			bench = new CircleBenchDataSet(options.sizes);
+		}
 		
 		new BenchRunner(bench, approaches, outputStream, options.iterations, options.timeout).run();
 		

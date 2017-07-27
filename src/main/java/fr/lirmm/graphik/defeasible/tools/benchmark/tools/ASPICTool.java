@@ -26,8 +26,8 @@ public class ASPICTool extends AbstractTool {
 	public void run() {
 		String KBString = this.getKBString();
 		
-		System.out.println(KBString);
-		System.out.println(this.getQuery());
+		//System.out.println(KBString);
+		//System.out.println(this.getQuery());
 		
 		try {
 			// I- Prepare Phase

@@ -1,4 +1,4 @@
-package fr.lirmm.graphik.defeasible.tools.benchmark.chain;
+package fr.lirmm.graphik.defeasible.tools.benchmark.grd;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -79,7 +79,7 @@ public class ChainBenchDataSet implements BenchDataSet {
 				kb.addDefeasibleRule(ruleString);
 			}
 			
-			String query = P + (n) + "_0(a0).";
+			String query = P + (n) + "_0" + this.getTermsString("a") + ".";
 			List<Object> generatedKBandQuery = new LinkedList<Object>();
 			generatedKBandQuery.add(kb);
 			generatedKBandQuery.add(DlgpDefeasibleParser.parseQuery("?() :- " + query));
