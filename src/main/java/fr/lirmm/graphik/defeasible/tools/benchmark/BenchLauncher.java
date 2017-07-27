@@ -10,6 +10,7 @@ import com.beust.jcommander.IStringConverter;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 
+import fr.lirmm.graphik.defeasible.tools.benchmark.ambiguity.AmbiguityDataSet;
 import fr.lirmm.graphik.defeasible.tools.benchmark.core.Approach;
 import fr.lirmm.graphik.defeasible.tools.benchmark.core.BenchDataSet;
 import fr.lirmm.graphik.defeasible.tools.benchmark.core.BenchRunner;
@@ -24,12 +25,13 @@ import fr.lirmm.graphik.util.stream.IteratorException;
 public class BenchLauncher {
 	public static final String BENCH_CHAIN = "CHAIN";
 	public static final String BENCH_CIRCLE = "CIRCLE";
+
+	public static final String BENCH_AMBIGUITY = "AMBIGUITY_TEST";
 	
 	public static final String BENCH_EXISTENTIAL = "EXISTENTIAL_TEST";
 	public static final String BENCH_SIMPLE_CHAIN_FES = "SIMPLE_CHAIN_FES";
 	public static final String BENCH_CHAIN_FES = "CHAIN_FES";
 	public static final String BENCH_CHAIN_PREF = "CHAIN_PREF";
-	public static final String BENCH_AMBIGUITY = "AMBIGUITY_TEST";
 	public static final String BENCH_LEVELS = "LEVELS";
 	public static final String BENCH_TEAMS = "TEAMS";
 	public static final String BENCH_TEAMS_GAD = "TEAMS_GAD";
@@ -41,10 +43,10 @@ public class BenchLauncher {
 	private boolean            help;
 	
 	@Parameter(names = { "-n", "--size" }, converter = IntArrayConverter.class, description = "Comma-separated list of sizes of the generated knowledge bases")
-	private int[]              sizes          = new int[] {5};
+	private int[]              sizes          = new int[] {1};
 	
 	@Parameter(names = { "-b", "--bench" }, description = BENCH_CHAIN+"|"+BENCH_CHAIN_FES +"|"+BENCH_CIRCLE+"|...")
-	private String             benchType             = BENCH_CIRCLE;
+	private String             benchType             = this.BENCH_AMBIGUITY;
 	
 	@Parameter(names = { "-o", "--output-file" }, description = "Output file (use '-' for stdout)")
 	private String             outputFilePath = "-"; //"chain.csv"
@@ -96,10 +98,12 @@ public class BenchLauncher {
 		//approaches.add(new RuleLogTool());
 		
 		BenchDataSet bench = null;
-		if(options.benchType == BENCH_CHAIN) {
+		if(options.benchType.equals(BENCH_CHAIN)) {
 			bench = new ChainBenchDataSet(options.sizes, options.nbrAtoms, options.nbrTerms);
-		} else if(options.benchType == options.BENCH_CIRCLE) {
-			bench = new CircleBenchDataSet(options.sizes);
+		} else if(options.benchType.equals(options.BENCH_CIRCLE)) {
+			bench = new CircleBenchDataSet(options.sizes, options.nbrAtoms, options.nbrTerms);
+		} else if(options.benchType.equals(options.BENCH_AMBIGUITY)) {
+			bench = new AmbiguityDataSet(options.sizes, options.nbrTerms);
 		}
 		
 		new BenchRunner(bench, approaches, outputStream, options.iterations, options.timeout).run();

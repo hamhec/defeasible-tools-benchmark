@@ -36,7 +36,7 @@ public class CircleBenchDataSet implements BenchDataSet {
 	}
 
 	public DataSetGenerator getDataSets() {
-		return new ChainDataSetGenerator(this.sizes, this.nbrAtoms, this.nbrTerms);
+		return new LocalDataSetGenerator(this.sizes, this.nbrAtoms, this.nbrTerms);
 	}
 	
 	/**
@@ -44,9 +44,9 @@ public class CircleBenchDataSet implements BenchDataSet {
 	 * @author hamhec
 	 *
 	 */
-	class ChainDataSetGenerator extends DataSetGenerator {
+	class LocalDataSetGenerator extends DataSetGenerator {
 
-		public ChainDataSetGenerator(int[] sizes, int nbrAtoms, int nbrTerms) {
+		public LocalDataSetGenerator(int[] sizes, int nbrAtoms, int nbrTerms) {
 			super(sizes, nbrAtoms, nbrTerms);
 		}
 

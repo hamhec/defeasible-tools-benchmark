@@ -11,7 +11,7 @@ import fr.lirmm.graphik.graal.api.io.ParseException;
 
 public abstract class DataSetGenerator implements Iterator<Iterator<? extends Object>> {
 	public static final int QUERY = 0, KB = 1;
-	public static final String P = "p", NP="np", Q = "q", NQ="nq";
+	public static final String P = "p", NP="np", Q = "q", NQ="nq", S = "s", NS="ns";
 	
 	private int[] sizes;
 	private int position;
