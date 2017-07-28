@@ -11,18 +11,18 @@ import fr.lirmm.graphik.defeasible.tools.benchmark.core.DataSetGenerator;
 import fr.lirmm.graphik.graal.api.core.AtomSetException;
 import fr.lirmm.graphik.graal.api.io.ParseException;
 
-public class AmbiguityDataSet implements BenchDataSet {
+public class AmbiguityBenchDataSet implements BenchDataSet {
 	private static final String NAME = "ChainBench";
 	
 	private int[] sizes;
 	private int nbrTerms;
 	
-	public AmbiguityDataSet(int[] sizes, int nbrTerms) {
+	public AmbiguityBenchDataSet(int[] sizes, int nbrTerms) {
 		this.sizes = sizes;
 		this.nbrTerms = nbrTerms;
 	}
 	
-	public AmbiguityDataSet(int[] sizes) {
+	public AmbiguityBenchDataSet(int[] sizes) {
 		this(sizes, 1);
 	}
 	
