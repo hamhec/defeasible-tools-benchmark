@@ -14,6 +14,7 @@ import fr.lirmm.graphik.defeasible.tools.benchmark.ambiguity.AmbiguityBenchDataS
 import fr.lirmm.graphik.defeasible.tools.benchmark.core.Approach;
 import fr.lirmm.graphik.defeasible.tools.benchmark.core.BenchDataSet;
 import fr.lirmm.graphik.defeasible.tools.benchmark.core.BenchRunner;
+import fr.lirmm.graphik.defeasible.tools.benchmark.existential.ExistentialBenchDataSet;
 import fr.lirmm.graphik.defeasible.tools.benchmark.existential.fes.TransitiveChainBenchDataSet;
 import fr.lirmm.graphik.defeasible.tools.benchmark.grd.ChainBenchDataSet;
 import fr.lirmm.graphik.defeasible.tools.benchmark.grd.CircleBenchDataSet;
@@ -49,7 +50,7 @@ public class BenchLauncher {
 	private int[]              sizes          = new int[] {1};
 	
 	@Parameter(names = { "-b", "--bench" }, description = BENCH_CHAIN+"|"+BENCH_CHAIN_FES +"|"+BENCH_CIRCLE+"|...")
-	private String             benchType             = this.BENCH_TRANSITIVE_CHAIN;
+	private String             benchType             = this.BENCH_EXISTENTIAL;
 	
 	@Parameter(names = { "-o", "--output-file" }, description = "Output file (use '-' for stdout)")
 	private String             outputFilePath = "-"; //"chain.csv"
@@ -107,6 +108,8 @@ public class BenchLauncher {
 			bench = new CircleBenchDataSet(options.sizes, options.nbrAtoms, options.nbrTerms);
 		} else if(options.benchType.equals(options.BENCH_AMBIGUITY)) {
 			bench = new AmbiguityBenchDataSet(options.sizes, options.nbrTerms);
+		} else if(options.benchType.equals(options.BENCH_EXISTENTIAL)) {
+			bench = new ExistentialBenchDataSet(options.sizes);
 		} else if(options.benchType.equals(options.BENCH_TRANSITIVE_CHAIN)) {
 			bench = new TransitiveChainBenchDataSet(options.sizes);
 		}
