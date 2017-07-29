@@ -80,7 +80,7 @@ public class ASPICTool extends AbstractTool {
 
 	@Override
 	public String formatDefeaterRule(DefeaterRule rule) {
-		return null; // ASPIC does not support Defeaters.
+		return ""; // ASPIC does not support Defeaters.
 	}
 
 	@Override

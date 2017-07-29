@@ -29,7 +29,7 @@ public class DeLPTool extends AbstractTool {
 	public void run() {
 		String KBString = this.getKBString();
 		
-		//System.out.println(KBString);
+		System.out.println(KBString);
 		//System.out.println(this.getQuery());
 		try {
 			// I- Prepare Phase
@@ -88,7 +88,7 @@ public class DeLPTool extends AbstractTool {
 
 	@Override
 	public String formatDefeaterRule(DefeaterRule rule) {
-		return null; // DeLP does not support Defeaters.
+		return ""; // DeLP does not support Defeaters.
 	}
 
 	@Override
@@ -110,7 +110,7 @@ public class DeLPTool extends AbstractTool {
 
 	@Override
 	public String formatPreference(Preference pref) {
-		return null; // DeLP does not support preferences
+		return ""; // DeLP does not support preferences
 	}
 
 	@Override

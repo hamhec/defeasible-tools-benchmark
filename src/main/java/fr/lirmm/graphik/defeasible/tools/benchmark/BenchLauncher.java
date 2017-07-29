@@ -18,6 +18,7 @@ import fr.lirmm.graphik.defeasible.tools.benchmark.existential.ExistentialBenchD
 import fr.lirmm.graphik.defeasible.tools.benchmark.existential.fes.TransitiveChainBenchDataSet;
 import fr.lirmm.graphik.defeasible.tools.benchmark.grd.ChainBenchDataSet;
 import fr.lirmm.graphik.defeasible.tools.benchmark.grd.CircleBenchDataSet;
+import fr.lirmm.graphik.defeasible.tools.benchmark.preference.LevelsBenchDataSet;
 import fr.lirmm.graphik.defeasible.tools.benchmark.tools.ASPICTool;
 import fr.lirmm.graphik.defeasible.tools.benchmark.tools.DEFTTool;
 import fr.lirmm.graphik.defeasible.tools.benchmark.tools.DeLPTool;
@@ -33,14 +34,7 @@ public class BenchLauncher {
 	public static final String BENCH_EXISTENTIAL = "EXISTENTIAL_TEST";
 	public static final String BENCH_TRANSITIVE_CHAIN = "TRANSITIVE_CHAIN";
 	
-	public static final String BENCH_SIMPLE_CHAIN_FES = "SIMPLE_CHAIN_FES";
-	public static final String BENCH_CHAIN_FES = "CHAIN_FES";
-	public static final String BENCH_CHAIN_PREF = "CHAIN_PREF";
 	public static final String BENCH_LEVELS = "LEVELS";
-	public static final String BENCH_TEAMS = "TEAMS";
-	public static final String BENCH_TEAMS_GAD = "TEAMS_GAD";
-	public static final String BENCH_TREES = "TEES";
-	public static final String BENCH_TREES_CONFLICT = "TEES_CONFLICT";
 	
 	
 	@Parameter(names = { "-h", "--help" }, description = "Print this message", help = true)
@@ -49,8 +43,8 @@ public class BenchLauncher {
 	@Parameter(names = { "-n", "--size" }, converter = IntArrayConverter.class, description = "Comma-separated list of sizes of the generated knowledge bases")
 	private int[]              sizes          = new int[] {1};
 	
-	@Parameter(names = { "-b", "--bench" }, description = BENCH_CHAIN+"|"+BENCH_CHAIN_FES +"|"+BENCH_CIRCLE+"|...")
-	private String             benchType             = this.BENCH_EXISTENTIAL;
+	@Parameter(names = { "-b", "--bench" }, description = BENCH_CHAIN+"|"+BENCH_CIRCLE+"|...")
+	private String             benchType             = this.BENCH_LEVELS;
 	
 	@Parameter(names = { "-o", "--output-file" }, description = "Output file (use '-' for stdout)")
 	private String             outputFilePath = "-"; //"chain.csv"
@@ -112,6 +106,8 @@ public class BenchLauncher {
 			bench = new ExistentialBenchDataSet(options.sizes);
 		} else if(options.benchType.equals(options.BENCH_TRANSITIVE_CHAIN)) {
 			bench = new TransitiveChainBenchDataSet(options.sizes);
+		} else if(options.benchType.equals(options.BENCH_LEVELS)) {
+			bench = new LevelsBenchDataSet(options.sizes);
 		}
 		
 		new BenchRunner(bench, approaches, outputStream, options.iterations, options.timeout).run();
