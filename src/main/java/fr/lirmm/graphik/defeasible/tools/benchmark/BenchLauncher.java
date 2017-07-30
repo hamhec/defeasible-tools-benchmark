@@ -19,6 +19,7 @@ import fr.lirmm.graphik.defeasible.tools.benchmark.existential.fes.TransitiveCha
 import fr.lirmm.graphik.defeasible.tools.benchmark.grd.ChainBenchDataSet;
 import fr.lirmm.graphik.defeasible.tools.benchmark.grd.CircleBenchDataSet;
 import fr.lirmm.graphik.defeasible.tools.benchmark.preference.LevelsBenchDataSet;
+import fr.lirmm.graphik.defeasible.tools.benchmark.team.TeamBenchDataSet;
 import fr.lirmm.graphik.defeasible.tools.benchmark.tools.ASPICTool;
 import fr.lirmm.graphik.defeasible.tools.benchmark.tools.DEFTTool;
 import fr.lirmm.graphik.defeasible.tools.benchmark.tools.DeLPTool;
@@ -29,12 +30,15 @@ public class BenchLauncher {
 	public static final String BENCH_CHAIN = "CHAIN";
 	public static final String BENCH_CIRCLE = "CIRCLE";
 
-	public static final String BENCH_AMBIGUITY = "AMBIGUITY_TEST";
-	
 	public static final String BENCH_EXISTENTIAL = "EXISTENTIAL_TEST";
 	public static final String BENCH_TRANSITIVE_CHAIN = "TRANSITIVE_CHAIN";
 	
+	public static final String BENCH_AMBIGUITY = "AMBIGUITY_TEST";
+	public static final String BENCH_TEAM = "TEAM";
+	
+	
 	public static final String BENCH_LEVELS = "LEVELS";
+	
 	
 	
 	@Parameter(names = { "-h", "--help" }, description = "Print this message", help = true)
@@ -44,7 +48,7 @@ public class BenchLauncher {
 	private int[]              sizes          = new int[] {1};
 	
 	@Parameter(names = { "-b", "--bench" }, description = BENCH_CHAIN+"|"+BENCH_CIRCLE+"|...")
-	private String             benchType             = this.BENCH_LEVELS;
+	private String             benchType             = this.BENCH_TEAM;
 	
 	@Parameter(names = { "-o", "--output-file" }, description = "Output file (use '-' for stdout)")
 	private String             outputFilePath = "-"; //"chain.csv"
@@ -108,6 +112,8 @@ public class BenchLauncher {
 			bench = new TransitiveChainBenchDataSet(options.sizes);
 		} else if(options.benchType.equals(options.BENCH_LEVELS)) {
 			bench = new LevelsBenchDataSet(options.sizes);
+		} else if(options.benchType.equals(options.BENCH_TEAM)) {
+			bench = new TeamBenchDataSet(options.sizes);
 		}
 		
 		new BenchRunner(bench, approaches, outputStream, options.iterations, options.timeout).run();
