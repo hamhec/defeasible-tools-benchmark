@@ -54,9 +54,9 @@ public class TeamBenchDataSet implements BenchDataSet {
 		private void generateRecursive(DefeasibleKnowledgeBase kb, String numHead, int currentLvl, int maxLvl) throws ParseException, AtomSetException {
 			if(currentLvl == maxLvl) {
 				kb.addFact(P+numHead+"_"+maxLvl+this.getTermsString("a") + ".");
-				kb.addFact(P+numHead+"_"+maxLvl+this.getTermsString("a") + ".");
-				kb.addFact(P+numHead+"_"+maxLvl+this.getTermsString("a") + ".");
-				kb.addFact(P+numHead+"_"+maxLvl+this.getTermsString("a") + ".");
+				//kb.addFact(P+numHead+"_"+maxLvl+this.getTermsString("a") + ".");
+				//kb.addFact(P+numHead+"_"+maxLvl+this.getTermsString("a") + ".");
+				//kb.addFact(P+numHead+"_"+maxLvl+this.getTermsString("a") + ".");
 				
 			} else if(currentLvl < maxLvl) {
 				this.generateTeamsForAtom(kb, numHead, currentLvl);
@@ -87,9 +87,9 @@ public class TeamBenchDataSet implements BenchDataSet {
 			DefeasibleKnowledgeBase kb = new DefeasibleKnowledgeBase();
 			
 			//  Create basic Atom and rules for lvl 1
-			this.generateRecursive(kb, "1", 0, n);
+			this.generateRecursive(kb, "0", 0, n);
 			
-			String query = P + "1_0" + this.getTermsString("a") + ".";
+			String query = P + "0_0" + this.getTermsString("a") + ".";
 			List<Object> generatedKBandQuery = new LinkedList<Object>();
 			generatedKBandQuery.add(kb);
 			generatedKBandQuery.add(DlgpDefeasibleParser.parseQuery("?() :- " + query));

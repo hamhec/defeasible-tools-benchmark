@@ -19,6 +19,7 @@ import fr.lirmm.graphik.defeasible.tools.benchmark.existential.fes.TransitiveCha
 import fr.lirmm.graphik.defeasible.tools.benchmark.grd.ChainBenchDataSet;
 import fr.lirmm.graphik.defeasible.tools.benchmark.grd.CircleBenchDataSet;
 import fr.lirmm.graphik.defeasible.tools.benchmark.preference.LevelsBenchDataSet;
+import fr.lirmm.graphik.defeasible.tools.benchmark.preformance.TreeBenchDataSet;
 import fr.lirmm.graphik.defeasible.tools.benchmark.team.TeamBenchDataSet;
 import fr.lirmm.graphik.defeasible.tools.benchmark.tools.ASPICTool;
 import fr.lirmm.graphik.defeasible.tools.benchmark.tools.DEFTTool;
@@ -36,8 +37,9 @@ public class BenchLauncher {
 	public static final String BENCH_AMBIGUITY = "AMBIGUITY_TEST";
 	public static final String BENCH_TEAM = "TEAM";
 	
-	
 	public static final String BENCH_LEVELS = "LEVELS";
+	
+	public static final String BENCH_TREE = "TREE";
 	
 	
 	
@@ -45,10 +47,10 @@ public class BenchLauncher {
 	private boolean            help;
 	
 	@Parameter(names = { "-n", "--size" }, converter = IntArrayConverter.class, description = "Comma-separated list of sizes of the generated knowledge bases")
-	private int[]              sizes          = new int[] {1};
+	private int[]              sizes          = new int[] {2};
 	
 	@Parameter(names = { "-b", "--bench" }, description = BENCH_CHAIN+"|"+BENCH_CIRCLE+"|...")
-	private String             benchType             = this.BENCH_TEAM;
+	private String             benchType             = this.BENCH_TREE;
 	
 	@Parameter(names = { "-o", "--output-file" }, description = "Output file (use '-' for stdout)")
 	private String             outputFilePath = "-"; //"chain.csv"
@@ -114,6 +116,8 @@ public class BenchLauncher {
 			bench = new LevelsBenchDataSet(options.sizes);
 		} else if(options.benchType.equals(options.BENCH_TEAM)) {
 			bench = new TeamBenchDataSet(options.sizes);
+		} else if(options.benchType.equals(options.BENCH_TREE)) {
+			bench = new TreeBenchDataSet(options.sizes, 5);
 		}
 		
 		new BenchRunner(bench, approaches, outputStream, options.iterations, options.timeout).run();
