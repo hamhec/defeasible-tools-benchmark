@@ -7,12 +7,11 @@ import fr.lirmm.graphik.defeasible.core.preference.Preference;
 import fr.lirmm.graphik.defeasible.core.rules.DefeasibleRule;
 import fr.lirmm.graphik.defeasible.core.rules.DefeaterRule;
 import fr.lirmm.graphik.defeasible.tools.benchmark.core.Approach;
-import fr.lirmm.graphik.extended.dialectical.graph.simplified.core.ExtendedDialecticalGraph;
+import fr.lirmm.graphik.eldr.core.ExtendedDialecticalGraph;
 import fr.lirmm.graphik.graal.api.core.Atom;
 import fr.lirmm.graphik.graal.api.core.ConjunctiveQuery;
 import fr.lirmm.graphik.graal.api.core.NegativeConstraint;
 import fr.lirmm.graphik.graal.api.core.Rule;
-import fr.lirmm.graphik.util.stream.CloseableIteratorWithoutException;
 
 public class ELDRTool extends AbstractTool {
 	public static final String NAME = "ELDR";

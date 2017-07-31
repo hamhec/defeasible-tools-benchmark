@@ -12,19 +12,21 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <defeasible.core.version>1.0.1</defeasible.core.version>
+    <eldr.version>0.7.0</eldr.version>
   </properties>
 
   <dependencies>
   	<dependency>
 	  <groupId>fr.lirmm.graphik</groupId>
 	  <artifactId>defeasible-core</artifactId>
-	  <version>1.0.1-SNAPSHOT</version>
+	  <version>${defeasible.core.version}</version>
 	</dependency>
 	
 	<dependency>
 	  <groupId>fr.lirmm.graphik</groupId>
- 	  <artifactId>extended-dialectical-graph-simplified</artifactId>
- 	  <version>0.0.1-SNAPSHOT</version>
+ 	  <artifactId>eldr</artifactId>
+ 	  <version>${eldr.version}</version>
 	</dependency>
 	
 	<dependency>
