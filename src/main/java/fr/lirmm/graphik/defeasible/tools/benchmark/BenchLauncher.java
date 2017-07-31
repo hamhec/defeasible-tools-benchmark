@@ -14,6 +14,7 @@ import fr.lirmm.graphik.defeasible.tools.benchmark.ambiguity.AmbiguityBenchDataS
 import fr.lirmm.graphik.defeasible.tools.benchmark.core.Approach;
 import fr.lirmm.graphik.defeasible.tools.benchmark.core.BenchDataSet;
 import fr.lirmm.graphik.defeasible.tools.benchmark.core.BenchRunner;
+import fr.lirmm.graphik.defeasible.tools.benchmark.defeater.DefeaterBenchDataSet;
 import fr.lirmm.graphik.defeasible.tools.benchmark.existential.ExistentialBenchDataSet;
 import fr.lirmm.graphik.defeasible.tools.benchmark.existential.fes.TransitiveChainBenchDataSet;
 import fr.lirmm.graphik.defeasible.tools.benchmark.grd.ChainBenchDataSet;
@@ -40,6 +41,8 @@ public class BenchLauncher {
 	
 	public static final String BENCH_LEVELS = "LEVELS";
 	
+	public static final String BENCH_DEFEATER = "defeater";
+	
 	public static final String BENCH_TREE = "TREE";
 	public static final String BENCH_DAG = "DAG";
 	
@@ -51,7 +54,7 @@ public class BenchLauncher {
 	private int[]              sizes          = new int[] {2};
 	
 	@Parameter(names = { "-b", "--bench" }, description = BENCH_CHAIN+"|"+BENCH_CIRCLE+"|...")
-	private String             benchType             = this.BENCH_DAG;
+	private String             benchType             = this.BENCH_DEFEATER;
 	
 	@Parameter(names = { "-o", "--output-file" }, description = "Output file (use '-' for stdout)")
 	private String             outputFilePath = "-"; //"chain.csv"
@@ -121,6 +124,8 @@ public class BenchLauncher {
 			bench = new TreeBenchDataSet(options.sizes, 5);
 		} else if(options.benchType.equals(options.BENCH_DAG)) {
 			bench = new DirectedAcyclicGraphBenchDataSet(options.sizes, 5);
+		} else if(options.benchType.equals(options.BENCH_DEFEATER)) {
+			bench = new DefeaterBenchDataSet(options.sizes, 5);
 		}
 		
 		new BenchRunner(bench, approaches, outputStream, options.iterations, options.timeout).run();
