@@ -11,6 +11,8 @@ import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 
 import fr.lirmm.graphik.defeasible.tools.benchmark.ambiguity.AmbiguityBenchDataSet;
+import fr.lirmm.graphik.defeasible.tools.benchmark.circular.CircularConflictBenchDataSet;
+import fr.lirmm.graphik.defeasible.tools.benchmark.circular.CircularSupportBenchDataSet;
 import fr.lirmm.graphik.defeasible.tools.benchmark.core.Approach;
 import fr.lirmm.graphik.defeasible.tools.benchmark.core.BenchDataSet;
 import fr.lirmm.graphik.defeasible.tools.benchmark.core.BenchRunner;
@@ -43,6 +45,9 @@ public class BenchLauncher {
 	
 	public static final String BENCH_DEFEATER = "defeater";
 	
+	public static final String BENCH_CIRCULAR_SUPPORT = "circular-support";
+	public static final String BENCH_CIRCULAR_CONFLICT = "circular-attack";
+	
 	public static final String BENCH_TREE = "TREE";
 	public static final String BENCH_DAG = "DAG";
 	
@@ -51,10 +56,10 @@ public class BenchLauncher {
 	private boolean            help;
 	
 	@Parameter(names = { "-n", "--size" }, converter = IntArrayConverter.class, description = "Comma-separated list of sizes of the generated knowledge bases")
-	private int[]              sizes          = new int[] {2};
+	private int[]              sizes          = new int[] {1};
 	
 	@Parameter(names = { "-b", "--bench" }, description = BENCH_CHAIN+"|"+BENCH_CIRCLE+"|...")
-	private String             benchType             = this.BENCH_DEFEATER;
+	private String             benchType             = this.BENCH_CIRCULAR_CONFLICT;
 	
 	@Parameter(names = { "-o", "--output-file" }, description = "Output file (use '-' for stdout)")
 	private String             outputFilePath = "-"; //"chain.csv"
@@ -126,6 +131,10 @@ public class BenchLauncher {
 			bench = new DirectedAcyclicGraphBenchDataSet(options.sizes, 5);
 		} else if(options.benchType.equals(options.BENCH_DEFEATER)) {
 			bench = new DefeaterBenchDataSet(options.sizes, 5);
+		} else if(options.benchType.equals(options.BENCH_CIRCULAR_SUPPORT)) {
+			bench = new CircularSupportBenchDataSet(options.sizes);
+		} else if(options.benchType.equals(options.BENCH_CIRCULAR_CONFLICT)) {
+			bench = new CircularConflictBenchDataSet(options.sizes);
 		}
 		
 		new BenchRunner(bench, approaches, outputStream, options.iterations, options.timeout).run();
