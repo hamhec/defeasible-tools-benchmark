@@ -4,27 +4,38 @@ Defeasible benchmark that can be used to classify defeasible reasoning tools bas
 
 ## How to Run?
 
-It is recommended to run the benchmark using command line, it is also possible to run it directly. All details are in [anon.conf.defeasible_benchmark.defeasible.BenchLaucher.java](https://github.com/anonconf/Benchmark/blob/master/src/main/java/anon/conf/defeasible_benchmark/defeasible/BenchLauncher.java). 
+It is recommended to run the benchmark using command line, it is also possible to run it directly. See [BenchLaucher.java](https://github.com/hamhec/defeasible-tools-benchmark/blob/master/src/main/java/fr/lirmm/graphik/defeasible/tools/benchmark/BenchLauncher.java).
 
 ## Test Theories
 
-* **Chain Theory:** Test performance when the GRD is acyclic.
-* **Existential Test Theory:** Test if the system understands existential rules, and test performance in presence of large number of constants.
-* **Chain FES Theory:** Test performance when faced with FES rules.
-* **Chain FUS Theory:** Test performance with FUS rules.
-* **Chain GBTS Theory:** Test performance with GBTS rules.
-* **AmbiguityTest Theory:** Test if the system has an ambiguity blocking or an ambiguity propagating behavior, and test performance when faced with conflicting arguments with long derivations.
-* **Circle Theory:** Test performance when the GRD is cyclic.
-* **Negation Chain Theory:** Test performance in the absence of conflict but with rules containing negated atoms in their body.
-* **Levels Theory:** Test performance when faced with large number of arguments with small derivations.
-* **Prioritized Levels Theory:** Test performance w.r.t. a priority relation.
-* **Teams Theory:** Test performance w.r.t. a sizable number of conflicts.
+* **Ambiguity:** Tests if the tool has an ambiguity blocking or an ambiguity propagating behavior.
+* **Team Defeat (Direct Reinstatement):** Tests if the tool allows for team defeat or not.
+* **Floating Conclusions:** Tests if the tool accepts floating conclusions.
+* **Consistent Answers:** Tests if the tool considers conflicts that appear after applying strict rules.
+
+![Semantics](resources/semanti.png)
+
+* **Existential Test:** Test if the tool understands existential rules.
+* **Chain FES:** Test performance when faced with FES rules.
+* **Chain FUS:** Test performance with FUS rules.
+* **Chain GBTS:** Test performance with GBTS rules.
+* **Cyclic GRD:** Test performance when the GRD is cyclic.
+* **Cyclic Conflict:** Test performance when faced with cyclic conflicts.
+* **Circular Reasoning:** Tests if the tool considers circular reasoning.
+* **Rule Application Block:** Test performance when defeaters or negated label on rules are used to block their application.
+* **Priority:** Test performance w.r.t. a priority relation.
+* **Queries:** Test performance when faced with non ground queries.
+
+![Expressivness](resources/express.png)
+
+* **Chain Theory:** Test performance with long chains of rules.
 * **Tree Theory:** Test performance w.r.t. a large number of linked arguments.
 * **Directed Acyclic Graph Theory:** Test performance when faced with many arguments for the same atom.
 
 ## How To Test Other Tools?
 
-Implement the interface [AbstractRuleBasedReasoningTool](https://github.com/anonconf/Benchmark/blob/master/src/main/java/anon/conf/defeasible_benchmark/defeasible/AbstractRuleBasedReasoningTool.java). Example: [DeLPTool](https://github.com/anonconf/Benchmark/blob/master/src/main/java/anon/conf/defeasible_benchmark/defeasible/tools/DeLPTool.java).
+Implement the interface [AbstractTool](https://github.com/hamhec/defeasible-tools-benchmark/blob/master/src/main/java/fr/lirmm/graphik/defeasible/tools/benchmark/tools/AbstractTool.java). Example: [DeLPTool](https://github.com/hamhec/defeasible-tools-benchmark/blob/master/src/main/java/fr/lirmm/graphik/defeasible/tools/benchmark/tools/DeLPTool.java).
+
 
 
 ## Contributors
