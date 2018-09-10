@@ -38,10 +38,6 @@ Implement the interface [AbstractTool](https://github.com/hamhec/defeasible-tool
 
 
 
-## Contributors
-
-This benchmark is currently under review, the list of contributors (and who to contact in case of problem) will be disclosed afterwards.
-
 ## License
 
-his project is licensed under the MIT License.
+This project is licensed under the MIT License.
